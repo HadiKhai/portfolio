@@ -1,18 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Box from "@material-ui/core/Container";
-import classNames from 'classnames'
-import TerminalHeader from "./TerminalHeader";
+import CommandLine from "./CommandLine";
+
+import './TerminalShell.css';
 
 const useStyles = makeStyles((theme) => ({
     main: {
-        fontFamily: 'Fira Code',
         textAlign: 'left',
-        height: 374,
+        height: 600,
         width: '100%',
         padding: 2,
         background: '#007EA7',
         color: '#003459',
+        borderRadius: '0 0 10px 10px',
 
     },
     welcome:{
@@ -26,11 +27,25 @@ const useStyles = makeStyles((theme) => ({
     },
     variable:{
         marginRight: 10
-    }
+    },
+    cmd:{
+        color:"white"
 
+    },
+    line: {
+        width: '100%',
+    }
 }))
 const TerminalShell = () => {
+
+    const CMD = () => {
+        return(
+            <CommandLine />
+        )
+    }
+
     const classes = useStyles();
+
     return (
         <Box display="flex" align="center" flexDirection="column" className={classes.main}>
             <Box>
@@ -39,10 +54,7 @@ const TerminalShell = () => {
                 </p>
             </Box>
             <Box className={classes.shell}>
-                <span> root@HadiKhai: </span>
-                <span className={classes.directory}> ~</span>
-                <span className={classes.variable}>$</span>
-                <span contentEditable={true} className="input"></span>
+               {CMD()}
             </Box>
         </Box>
     )

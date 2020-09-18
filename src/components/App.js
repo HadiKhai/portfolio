@@ -1,33 +1,42 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from "@material-ui/core/Container";
-import Terminal from "./Terminal";
+import Terminal from "./terminal/Terminal";
+import Box from "@material-ui/core/Container";
+import Footer from "./footer/Footer";
 const useStyles = makeStyles((theme) => ({
     main: {
         background: '#003459',
         height: '100%',
-        width: '100%'
+        width: '100%',
+        fontFamily: 'Fira Code',
+
+    },
+    elements:{
+        marginTop: '5vh',
     },
     terminal: {
         textAlign: "left",
-        width: "90%",
-        height: 400,
         margin: "auto",
         position: "relative",
         display: "block",
-        top: "25vh",
         padding: 0
+    },
+    footer: {
+        marginTop: '15vh'
     }
 }))
 const App = () => {
     const classes = useStyles();
     return (
         <div className={classes.main}>
-            <Grid container>
-                <Grid item xs={12} className={classes.terminal}>
-                   <Terminal/>
-                </Grid>
-            </Grid>
+            <Box container display="flex" align="center" flexDirection="column" className={classes.elements}>
+                <Box className={classes.terminal}>
+                    <Terminal/>
+                </Box>
+                <Box className={classes.footer}>
+                    <Footer/>
+                </Box>
+            </Box>
         </div>
     )
 }
