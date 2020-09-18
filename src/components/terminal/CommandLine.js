@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
+import { useDispatch } from 'react-redux';
 import './TerminalShell.css'
+import sendCommand from "../../actions";
 
 const useStyles = makeStyles((theme) => ({
     main: {
@@ -36,8 +38,13 @@ const useStyles = makeStyles((theme) => ({
 const CommandLine = () => {
 
     const classes = useStyles();
-    const handleKeypress = e => {
-        console.log(e);
+
+    const dispatch = useDispatch();
+
+    const handleKeyPress = e => {
+        if(e.key === 'Enter') {
+            dispatch(sendCommand(e.currentTarget.textContent));
+        }
     }
 
     return (

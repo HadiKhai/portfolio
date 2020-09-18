@@ -5,7 +5,6 @@ import TerminalHeader from "./TerminalHeader";
 import TerminalShell from "./TerminalShell";
 const useStyles = makeStyles((theme) => ({
     header: {
-        height: 24,
         width: '100%',
         padding: 0,
         position: 'relative'

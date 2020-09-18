@@ -5,10 +5,10 @@ import classNames from 'classnames'
 
 const useStyles = makeStyles((theme) => ({
     main: {
+        height: 20,
         background: '#00A8E8',
-        height: '100%',
         width: '100%',
-        borderRadius: '10px 10px 0 0',
+        borderRadius: '8px 8px 0 0',
     },
     exit: {
         background: "#FFFFFF"
@@ -20,8 +20,8 @@ const useStyles = makeStyles((theme) => ({
         background: "#00171F"
     },
     buttons: {
-        width: 14,
-        height: 14,
+        width: 10,
+        height: 10,
         marginTop: 5,
         marginRight: 10,
         display: "inline-block",
