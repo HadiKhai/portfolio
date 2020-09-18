@@ -7,7 +7,8 @@ const useStyles = makeStyles((theme) => ({
     main: {
         background: '#00A8E8',
         height: '100%',
-        width: '100%'
+        width: '100%',
+        borderRadius: '10px 10px 0 0',
     },
     exit: {
         background: "#FFFFFF"
