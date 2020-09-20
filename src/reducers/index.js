@@ -1,11 +1,6 @@
-import {SEND_CMD} from "../types/action";
+import { combineReducers } from 'redux';
+import cmd from './cmd';
 
-export default (state = [] ,action) => {
-    switch (action.type){
-        case SEND_CMD:
-            return {...state,cmd: action.payload}
-        default:
-            return state;
-    }
-
-}
+export default combineReducers({
+    cmd
+})

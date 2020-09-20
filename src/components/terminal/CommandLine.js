@@ -1,8 +1,21 @@
 import React, {useState} from 'react';
-import {makeStyles} from '@material-ui/core/styles';
+import {TextField,makeStyles,createMuiTheme, Box, ThemeProvider}   from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import './TerminalShell.css'
 import sendCommand from "../../actions";
+
+const theme = createMuiTheme({
+    overrides: {
+        MuiInputBase: {
+            input:{
+                fontFamily: 'Fira Code',
+                color: 'white',
+                width: '100%',
+            }
+        }
+    }
+});
+
 
 const useStyles = makeStyles((theme) => ({
     main: {
@@ -25,38 +38,100 @@ const useStyles = makeStyles((theme) => ({
         color: '#00a8e8'
     },
     variable: {
-        marginRight: 10
+        marginRight: 0
     },
     cmd: {
-        color: "white"
+        color: "white",
+        height: 20,
+        width: '100%'
 
     },
     line: {
         width: '100%',
+    },
+    user: {
+        minWidth: 178,
+        width:178
     }
 }))
-const CommandLine = () => {
-
+const CommandLine = ({cmdProp}) => {
+    console.log(cmdProp)
     const classes = useStyles();
-
+    const [disable,setDisable] = useState(false);
     const dispatch = useDispatch();
-
     const handleKeyPress = e => {
-        if(e.key === 'Enter') {
-            dispatch(sendCommand(e.currentTarget.textContent));
+        if(e.key === 'Enter'){
+            setDisable(true);
+            dispatch(sendCommand(e.target.value));
         }
     }
+    if(cmdProp) {
+        return (
+            <div>
+                <Box display="flex" flexDirection="row">
+                    <Box className={classes.user}>
+                        <span>root@HadiKhai: </span>
+                        <span className={classes.directory}> ~</span>
+                        <span className={classes.variable}>$</span>
+                    </Box>
+                    <Box className={classes.cmd}>
+                        <ThemeProvider theme={theme}>
+                            <TextField
+                                fullWidth
+                                id="cmd"
+                                autoComplete='off'
+                                value={cmdProp}
+                                disabled={true}
+                                onKeyUp={handleKeyPress}
 
+                                height={20}
+                                className={classes.textField}
+                                InputProps={{
+                                    style: {
+                                        height: 20,
+                                        padding: '0 0 0 0',
+                                    },
+                                    disableUnderline: true,
+                                }}
+                            />
+                        </ThemeProvider>
+                    </Box>
+                </Box>
+            </div>
+        )
+    }
     return (
         <div>
-            <span> root@HadiKhai: </span>
-            <span className={classes.directory}> ~</span>
-            <span className={classes.line}>
-                <span className={classes.variable}>$</span>
-                <span type="text"  onKeyPress={handleKeyPress} contentEditable={true} spellCheck="false" className={classes.cmd}></span>
-            </span>
+            <Box display="flex" flexDirection="row">
+                <Box className={classes.user}>
+                    <span>root@HadiKhai: </span>
+                    <span className={classes.directory}> ~</span>
+                    <span className={classes.variable}>$</span>
+                </Box>
+                <Box className={classes.cmd}>
+                    <ThemeProvider theme={theme}>
+                        <TextField
+                            fullWidth
+                            id="cmd"
+                            autoComplete='off'
+                            onKeyUp={handleKeyPress}
+
+                            height={20}
+                            className={classes.textField}
+                            InputProps={{
+                                style: {
+                                    height: 20,
+                                    padding: '0 0 0 0',
+                                },
+                                disableUnderline: true,
+                            }}
+                        />
+                    </ThemeProvider>
+                </Box>
+            </Box>
         </div>
     )
+
 }
 
 export default CommandLine;

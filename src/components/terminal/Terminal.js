@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 const Terminal = () => {
     const classes = useStyles();
     return (
-        <Box display="flex" align="center" flexDirection="column">
+        <Box display="flex" align="center" flexdirection="column">
             <Box className={classes.header}>
                 <TerminalHeader />
             </Box>

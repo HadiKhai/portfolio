@@ -29,7 +29,7 @@ const App = () => {
     const classes = useStyles();
     return (
         <div className={classes.main}>
-            <Box container display="flex" align="center" flexDirection="column" className={classes.elements}>
+            <Box container='true' display="flex" align="center" flexdirection="column" className={classes.elements}>
                 <Box className={classes.terminal}>
                     <Terminal/>
                 </Box>
