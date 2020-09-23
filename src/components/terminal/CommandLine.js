@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
-import {TextField,makeStyles,createMuiTheme, Box, ThemeProvider}   from '@material-ui/core';
-import { useDispatch } from 'react-redux';
+import {TextField, makeStyles, createMuiTheme, Box, ThemeProvider} from '@material-ui/core';
+import {useDispatch} from 'react-redux';
 import './TerminalShell.css'
-import sendCommand from "../../actions";
+import {sendCommand,fetchDirectoryContent} from '../../actions'
 
 const theme = createMuiTheme({
     overrides: {
         MuiInputBase: {
-            input:{
+            input: {
                 fontFamily: 'Fira Code',
                 color: 'white',
                 width: '100%',
@@ -43,94 +43,80 @@ const useStyles = makeStyles((theme) => ({
     cmd: {
         color: "white",
         height: 20,
-        width: '100%'
+        flex: '1',
 
     },
     line: {
         width: '100%',
     },
     user: {
-        minWidth: 178,
-        width:178
+        flex: '0 1 auto',
+        overflow: 'hidden',
+        marginRight: 10
+    },
+    prompt: {
+        alignItems: 'flex-start'
     }
 }))
 const CommandLine = ({cmdProp}) => {
-    console.log(cmdProp)
+
     const classes = useStyles();
-    const [disable,setDisable] = useState(false);
+    const [disable, setDisable] = useState(false);
     const dispatch = useDispatch();
+    const [command,setCommand] = useState(cmdProp[0]);
+    const [directory, setDirectory] = useState(cmdProp[1])
+    const status = !cmdProp[2];
     const handleKeyPress = e => {
-        if(e.key === 'Enter'){
+        if (e.key === 'Enter') {
             setDisable(true);
-            dispatch(sendCommand(e.target.value));
+            dispatch(sendCommand(e.target.value, directory, false));
+            dispatch(fetchDirectoryContent('root'))
         }
     }
-    if(cmdProp) {
-        return (
-            <div>
-                <Box display="flex" flexDirection="row">
-                    <Box className={classes.user}>
-                        <span>root@HadiKhai: </span>
-                        <span className={classes.directory}> ~</span>
-                        <span className={classes.variable}>$</span>
-                    </Box>
-                    <Box className={classes.cmd}>
-                        <ThemeProvider theme={theme}>
-                            <TextField
-                                fullWidth
-                                id="cmd"
-                                autoComplete='off'
-                                value={cmdProp}
-                                disabled={true}
-                                onKeyUp={handleKeyPress}
 
-                                height={20}
-                                className={classes.textField}
-                                InputProps={{
-                                    style: {
-                                        height: 20,
-                                        padding: '0 0 0 0',
-                                    },
-                                    disableUnderline: true,
-                                }}
-                            />
-                        </ThemeProvider>
-                    </Box>
-                </Box>
-            </div>
-        )
+    const handleChange = (event) => {
+        setCommand(event.target.value);
+    };
+    const dir = () => {
+
+        if (directory === 'root') {
+            return '';
+        }
+        return `/${directory}`
+
     }
     return (
-        <div>
-            <Box display="flex" flexDirection="row">
-                <Box className={classes.user}>
-                    <span>root@HadiKhai: </span>
-                    <span className={classes.directory}> ~</span>
-                    <span className={classes.variable}>$</span>
-                </Box>
-                <Box className={classes.cmd}>
-                    <ThemeProvider theme={theme}>
-                        <TextField
-                            fullWidth
-                            id="cmd"
-                            autoComplete='off'
-                            onKeyUp={handleKeyPress}
-
-                            height={20}
-                            className={classes.textField}
-                            InputProps={{
-                                style: {
-                                    height: 20,
-                                    padding: '0 0 0 0',
-                                },
-                                disableUnderline: true,
-                            }}
-                        />
-                    </ThemeProvider>
-                </Box>
+        <Box display="flex" flexdirection="row" className={classes.prompt}>
+            <Box className={classes.user}>
+                <span>root@HadiKhai: </span>
+                <span className={classes.directory}> ~{dir()}</span>
+                <span className={classes.variable}>$ </span>
             </Box>
-        </div>
+            <Box className={classes.cmd}>
+                <ThemeProvider theme={theme}>
+                    <TextField
+                        fullWidth
+                        id="cmd"
+                        autoComplete='off'
+                        value={command}
+                        onChange={handleChange}
+                        disabled={status}
+                        onKeyUp={handleKeyPress}
+                        height={20}
+                        className={classes.textField}
+                        InputProps={{
+                            style: {
+                                height: 20,
+                                padding: '0 0 0 0',
+                            },
+                            disableUnderline: true,
+                        }}
+                    />
+                </ThemeProvider>
+            </Box>
+        </Box>
     )
+
 
 }
 

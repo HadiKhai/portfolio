@@ -40,10 +40,9 @@ const useStyles = makeStyles((theme) => ({
 
 const TerminalShell = () => {
     const command = useSelector(state => state.cmd)
-
     const CMD = () => {
         const commandHistory= [...command]
-        commandHistory.push('')
+        commandHistory.push(['','root',true])
         console.log(commandHistory)
         return (
             commandHistory
