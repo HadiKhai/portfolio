@@ -5,28 +5,17 @@ import TerminalHeader from "./TerminalHeader";
 import TerminalShell from "./TerminalShell";
 
 const useStyles = makeStyles(() => ({
-    header: {
-        width: '100%',
-        padding: 0,
-        position: 'relative'
-    },
-    shell: {
-        width: '100%',
-        padding: 0,
-        position: 'relative',
-    },
+    main:{
+        marginBottom: 50
+    }
 }));
+
 const Terminal = () => {
     const classes = useStyles();
     return (
-
-        <Box display="flex" align="center" flexdirection="column" className={classes.terminal}>
-            <Box className={classes.header}>
+        <Box display="flex" align="center" flexdirection="column" className={classes.main}>
                 <TerminalHeader />
-            </Box>
-            <Box className={classes.shell}>
                 <TerminalShell />
-            </Box>
         </Box>
     )
 };

@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
-import cmd from './cmd';
+import commands from './commands';
 import directory from './directory';
+import responses from './responses';
 
 export default combineReducers({
-    cmd,
+    commands,
+    responses,
     directory
 })

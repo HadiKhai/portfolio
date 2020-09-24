@@ -1,31 +1,16 @@
-import { FETCH_DIRECTORY_CONTENT_FAILED,FETCH_DIRECTORY_CONTENT_STARTED,FETCH_DIRECTORY_CONTENT_SUCCEEDED}from '../types/action/directory'
+import {CHANGE_DIRECTORY} from "../types/action";
 
-const initialState = {
-    loading: false,
-    content: [],
-    error: null
-};
+const initialStateCurrentDirectory = {
+    directory: 'root'
+}
 
-export default function (state = initialState, action) {
-    switch (action.type) {
-        case FETCH_DIRECTORY_CONTENT_STARTED:
+export default (state = initialStateCurrentDirectory,action) => {
+    switch(action.type) {
+        case CHANGE_DIRECTORY:
             return {
                 ...state,
-                loading: true
-            };
-        case FETCH_DIRECTORY_CONTENT_SUCCEEDED:
-            return {
-                ...state,
-                loading: false,
-                error: null,
-                content: [...state.content, action.payload]
-            };
-        case FETCH_DIRECTORY_CONTENT_FAILED:
-            return {
-                ...state,
-                loading: false,
-                error: action.payload.err
-            };
+                directory: action.payload
+            }
         default:
             return state;
     }

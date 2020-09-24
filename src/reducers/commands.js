@@ -1,9 +1,4 @@
-import {SEND_CMD} from "../types/action/cmd";
-
-function insertAt(array, index, ...elementsArray) {
-    array.splice(index, 0, ...elementsArray);
-}
-
+import {SEND_CMD} from "../types/action";
 
 export default (state = [] ,action) => {
     switch (action.type){
@@ -14,4 +9,3 @@ export default (state = [] ,action) => {
     }
 
 }
-

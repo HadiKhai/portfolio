@@ -1,20 +1,22 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
+import {useSelector} from "react-redux";
 import {makeStyles} from '@material-ui/core/styles';
 import Box from "@material-ui/core/Container";
 import CommandLine from "./CommandLine";
+import CommandResponse from "./CommandResponse";
 
 import './TerminalShell.css';
-import {useSelector} from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     main: {
         textAlign: 'left',
-        height: 600,
+        overflow: 'auto',
         width: '100%',
         padding: 2,
         background: '#007EA7',
         color: '#00171F',
         borderRadius: '0 0 10px 10px',
+        height: 800
 
     },
     welcome: {
@@ -39,22 +41,38 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const TerminalShell = () => {
-    const command = useSelector(state => state.cmd)
-    const CMD = () => {
-        const commandHistory= [...command]
-        commandHistory.push(['','root',true])
-        console.log(commandHistory)
-        return (
-            commandHistory
-                .map(cmd => (
-                    <CommandLine cmdProp={cmd}/>
-                )
-            )
-        )
+    const classes = useStyles();
+    const commands = useSelector(state => state.commands);
+    const responses = useSelector(state => state.responses);
+    const currentDirectory = useSelector(state => state.directory);
 
+    const CMD = () => {
+        const rows = [];
+        for(let i=0; i < commands.length; i++){
+            rows.push(
+                <div>
+                    <CommandLine cmdProps={commands[i]} key={`Line-${i}`}/>
+                    <CommandResponse responseProps={responses[i]} key={`Response-${i}`}/>
+                </div>
+            )
+        }
+        return (<div>
+            {rows}
+        </div>)
     }
 
-    const classes = useStyles();
+    const prompt = () => {
+        const conditions = {
+            cmd: '',
+            args: '',
+            dir: currentDirectory.directory,
+            status: true
+        }
+        return (
+            <CommandLine cmdProps={conditions}/>
+        )
+    }
+
     return (
         <Box display="flex" align="center" flexdirection="column" className={classes.main}>
             <Box>
@@ -64,6 +82,7 @@ const TerminalShell = () => {
             </Box>
             <Box className={classes.shell}>
                 {CMD()}
+                {prompt()}
             </Box>
         </Box>
     )
