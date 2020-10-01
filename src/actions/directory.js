@@ -1,36 +1,51 @@
 import {
     CHANGE_DIRECTORY,
     COMMAND_FAILED,
-    COMMAND_COMPLETED,
+    COMMAND_COMPLETED, FETCH_DIRECTORY,
 } from "../types/action";
 
 import {DIRECTORIES} from "../config";
 import httpClient from "../config/api";
-import {LS} from "../types/commands";
+import {CD, LS} from "../types/commands";
 
-const changeDirectory = (dir) => dispatch =>
-    dispatch({
-        type: CHANGE_DIRECTORY,
-        payload: dir
-    })
 
-const fetchDirectoryContent = (dir) => dispatch => {
-    const endpoint = `${DIRECTORIES}/${dir}`;
+
+const fetchDirectoryContent = () => (dispatch,getState) => {
+
+    let dir = getState().directory.currentDirectory
+
+    console.log(dir)
+    const root = 'root'
+
+    if(dir.indexOf('/')!==-1) {
+        dir = dir.replaceAll('/', '%2F')
+    }
+    const directory = `${root}%2F${dir}`
+
+    const endpoint = `${DIRECTORIES}/${directory}`;
 
     httpClient.get(endpoint).then(res => {
-        dispatch(fetchDirectoryContentSucceeded(res.data))
+        dispatch(fetchDirectoryContentSucceeded(res.data,dir))
     })
 }
 
-const fetchDirectoryContentSucceeded = (content) => (
+const fetchDirectoryContentSucceeded = (content,dir) => (
     {
-        type: COMMAND_COMPLETED,
+        type: FETCH_DIRECTORY,
         payload: {
             content,
-            cmd: LS,
-            error: false
+            directory:dir
         }
     })
 
-
-export {changeDirectory, fetchDirectoryContent};
+const changeDirectory = (dir) => (dispatch) => {
+    console.log(dir)
+    dispatch({
+        type: CHANGE_DIRECTORY,
+        payload: {
+            directory:dir
+        }
+    })
+    dispatch(fetchDirectoryContent())
+}
+export { fetchDirectoryContent,changeDirectory};

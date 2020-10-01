@@ -1,4 +1,5 @@
 import React from 'react';
+import {useDispatch} from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Terminal from "./terminal/Terminal";
 import Box from "@material-ui/core/Container";
@@ -13,7 +14,9 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 const App = () => {
+
     const classes = useStyles();
+
     return (
             <Box container='true' display="flex" align="center" flexdirection="column" className={classes.main}>
                     <Terminal/>

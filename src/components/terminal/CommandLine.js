@@ -2,8 +2,16 @@ import React, {useState} from 'react';
 import {TextField, makeStyles, createMuiTheme, Box, ThemeProvider} from '@material-ui/core';
 import {useDispatch} from 'react-redux';
 import './TerminalShell.css'
-import {fetchDirectoryContent, sendCommand, sendEmptyCommand,sendCommandNotFound, sendResponse} from '../../actions'
-import {CD_HELP, HELP, LS, LS_HELP,HISTORY_HELP,CAT_HELP,CLEAR_HELP} from "../../types/commands";
+import {
+    fetchDirectoryContent,
+    sendCommand,
+    sendEmptyCommand,
+    sendCommandNotFound,
+    sendResponse,
+    sendClearCommand,
+    sendHistoryCommand, changeDirectory, sendLSCommand, sendCDCommand
+} from '../../actions'
+import {CD_HELP, HELP, LS, LS_HELP, HISTORY_HELP, CAT_HELP, CLEAR_HELP, CLEAR, HISTORY, CD} from "../../types/commands";
 
 const theme = createMuiTheme({
     overrides: {
@@ -37,7 +45,9 @@ const useStyles = makeStyles((theme) => ({
         marginRight: 10
     },
     prompt: {
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        fontFamily: 'Fira Code',
+
     }
 }))
 const CommandLine = ({cmdProps}) => {
@@ -45,7 +55,7 @@ const CommandLine = ({cmdProps}) => {
     const dispatch = useDispatch();
     const [command,setCommand] = useState(cmdProps.cmd);
     const [args,setArgs] = useState(cmdProps.args);
-    const [directory, setDirectory] = useState(cmdProps.dir)
+    const directory = cmdProps.dir
     const status = !cmdProps.status;
     const handleKeyPress = e => {
         if (e.key === 'Enter') {
@@ -54,8 +64,7 @@ const CommandLine = ({cmdProps}) => {
             const words = line.split(' ');
             const cmd = words[0];
             const arg = line.slice(cmd.length+1);
-
-            dispatch(sendCommand(words[0],arg, directory, false));
+            dispatch(sendCommand(words[0], arg, false, true));
 
 
             switch(cmd) {
@@ -63,7 +72,16 @@ const CommandLine = ({cmdProps}) => {
                     dispatch(sendResponse([LS_HELP,CD_HELP,HISTORY_HELP,CAT_HELP,CLEAR_HELP],HELP))
                     break;
                 case LS:
-                    dispatch(fetchDirectoryContent(directory))
+                    dispatch(sendLSCommand())
+                    break;
+                case HISTORY:
+                    dispatch(sendHistoryCommand())
+                    break;
+                case CLEAR:
+                    dispatch(sendClearCommand())
+                    break;
+                case CD:
+                    dispatch(sendCDCommand(arg))
                     break;
                 case '':
                     dispatch(sendEmptyCommand())
@@ -71,6 +89,8 @@ const CommandLine = ({cmdProps}) => {
                 default:
                     dispatch(sendCommandNotFound(cmd))
             }
+
+
         }
     }
 
@@ -78,20 +98,11 @@ const CommandLine = ({cmdProps}) => {
         setCommand(event.target.value);
     };
 
-    const dir = () => {
-
-        if (directory === 'root') {
-            return '';
-        }
-        return `/${directory}`
-
-    }
-
     return (
         <Box display="flex" flexdirection="row" className={classes.prompt}>
             <Box className={classes.user}>
                 <span>root@HadiKhai: </span>
-                <span className={classes.directory}> ~{dir()}</span>
+                <span className={classes.directory}> ~{directory}</span>
                 <span className={classes.variable}>$ </span>
             </Box>
             <Box className={classes.cmd}>

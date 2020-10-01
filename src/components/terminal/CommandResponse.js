@@ -1,7 +1,7 @@
 import React from 'react';
 import {makeStyles, Box} from '@material-ui/core';
 import './TerminalShell.css'
-import {HELP,LS} from "../../types/commands";
+import {CD, HELP, HISTORY, LS} from "../../types/commands";
 
 const useStyles = makeStyles(() => ({
     prompt: {
@@ -27,11 +27,12 @@ const CommandResponse = ({responseProps}) => {
 
     const command = responseProps? responseProps.cmd:'';
     const content = responseProps? responseProps.content:[];
+    const error = responseProps? responseProps.content:false;
+    const dir = responseProps? responseProps.dir:'';
     const Response = () => {
         switch(command) {
             case HELP: {
                 const help = [];
-                console.log(content)
                 content.forEach( commandDescription => {
                     if(typeof commandDescription === 'string'){
                         help.push(<li>{commandDescription}</li>)
@@ -65,16 +66,37 @@ const CommandResponse = ({responseProps}) => {
 
                 })
                 return (
-                    <p> {folderAndFiles}</p>
+                    <p>{folderAndFiles}</p>
                 )
             }
 
+            case HISTORY:{
+                const history = []
+
+                for(let i=0; i<content.length; i++){
+                    history.push(<span>{i+1} {content[i]} <br /></span>)
+                }
+                return (
+                    <span>
+                        {history}
+                    </span>
+                )
+            }
+            case CD:
+                if(error){
+                    return (
+                     <p>{command}: {dir}: {content}</p>
+                    )
+                }
+                return (
+                    <div></div>
+                )
             case '':
                 return (
                     <div></div>
                 )
             default:
-                return <span>{command}: {content}</span>
+                return <p>{command}: {content}</p>
         }
     }
 

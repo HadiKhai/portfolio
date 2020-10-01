@@ -1,7 +1,8 @@
-import {CHANGE_DIRECTORY} from "../types/action";
+import {CHANGE_DIRECTORY, FETCH_DIRECTORY} from "../types/action";
 
 const initialStateCurrentDirectory = {
-    directory: 'root'
+    currentDirectory:'',
+    content:[]
 }
 
 export default (state = initialStateCurrentDirectory,action) => {
@@ -9,8 +10,14 @@ export default (state = initialStateCurrentDirectory,action) => {
         case CHANGE_DIRECTORY:
             return {
                 ...state,
-                directory: action.payload
+                currentDirectory: action.payload.directory
             }
+        case FETCH_DIRECTORY:{
+            return {
+                ...state,
+                content: action.payload.content
+            }
+        }
         default:
             return state;
     }

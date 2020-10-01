@@ -10,13 +10,14 @@ import './TerminalShell.css';
 const useStyles = makeStyles((theme) => ({
     main: {
         textAlign: 'left',
+        fontFamily: 'Fira Code',
         overflow: 'auto',
         width: '100%',
         padding: 2,
         background: '#007EA7',
         color: '#00171F',
         borderRadius: '0 0 10px 10px',
-        height: 800
+        height: '80vh'
 
     },
     welcome: {
@@ -44,17 +45,18 @@ const TerminalShell = () => {
     const classes = useStyles();
     const commands = useSelector(state => state.commands);
     const responses = useSelector(state => state.responses);
-    const currentDirectory = useSelector(state => state.directory);
-
+    const currentDirectory = useSelector(state => state.directory.currentDirectory);
     const CMD = () => {
         const rows = [];
         for(let i=0; i < commands.length; i++){
-            rows.push(
-                <div>
-                    <CommandLine cmdProps={commands[i]} key={`Line-${i}`}/>
-                    <CommandResponse responseProps={responses[i]} key={`Response-${i}`}/>
-                </div>
-            )
+            if(commands[i].show) {
+                rows.push(
+                    <div>
+                        <CommandLine cmdProps={commands[i]} key={`Line-${i}`}/>
+                        <CommandResponse responseProps={responses[i]} key={`Response-${i}`}/>
+                    </div>
+                )
+            }
         }
         return (<div>
             {rows}
@@ -65,9 +67,11 @@ const TerminalShell = () => {
         const conditions = {
             cmd: '',
             args: '',
-            dir: currentDirectory.directory,
-            status: true
+            dir: currentDirectory,
+            status: true,
+            shown: true
         }
+
         return (
             <CommandLine cmdProps={conditions}/>
         )

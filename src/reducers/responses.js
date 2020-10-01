@@ -1,4 +1,11 @@
-import { COMMAND_COMPLETED,COMMAND_FAILED,COMMAND_NOT_FOUND,COMMAND_EMPTY}from '../types/action'
+import {
+    COMMAND_COMPLETED,
+    COMMAND_FAILED,
+    COMMAND_NOT_FOUND,
+    COMMAND_EMPTY,
+    CLEAR_CMD,
+    DIRECTORY_NOT_FOUND
+} from '../types/action'
 
 export default  (state = [], action) => {
     switch (action.type) {
@@ -38,6 +45,15 @@ export default  (state = [], action) => {
                     error: true
                 }
             ];
+        case DIRECTORY_NOT_FOUND:
+            return [
+                ...state,
+                {
+                    cmd: action.payload.cmd,
+                    content: action.payload.content,
+                    dir: action.payload.dir,
+                }
+            ]
         default:
             return state;
     }

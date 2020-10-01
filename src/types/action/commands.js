@@ -1,3 +1,4 @@
 export const SEND_CMD = 'SEND_CMD';
-export const COMMAND_EMPTY = 'COMMAND_EMPTY';
-export const COMMAND_NOT_FOUND = 'COMMAND_NOT_FOUND';
+export const CLEAR_CMD = 'CLEAR_CMD'
+export const HISTORY_CMD = 'HISTORY_CMD'
+export const LS_CMD = 'LS_CMD'
