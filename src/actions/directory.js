@@ -1,12 +1,9 @@
 import {
-    CHANGE_DIRECTORY,
-    COMMAND_FAILED,
-    COMMAND_COMPLETED, FETCH_DIRECTORY,
+    CHANGE_DIRECTORY,FETCH_DIRECTORY,
 } from "../types/action";
 
 import {DIRECTORIES} from "../config";
-import httpClient from "../config/api";
-import {CD, LS} from "../types/commands";
+import {httpClient} from "../config/api";
 
 
 
@@ -14,7 +11,6 @@ const fetchDirectoryContent = () => (dispatch,getState) => {
 
     let dir = getState().directory.currentDirectory
 
-    console.log(dir)
     const root = 'root'
 
     if(dir.indexOf('/')!==-1) {
@@ -39,7 +35,6 @@ const fetchDirectoryContentSucceeded = (content,dir) => (
     })
 
 const changeDirectory = (dir) => (dispatch) => {
-    console.log(dir)
     dispatch({
         type: CHANGE_DIRECTORY,
         payload: {

@@ -3,15 +3,30 @@ import {TextField, makeStyles, createMuiTheme, Box, ThemeProvider} from '@materi
 import {useDispatch} from 'react-redux';
 import './TerminalShell.css'
 import {
-    fetchDirectoryContent,
     sendCommand,
     sendEmptyCommand,
     sendCommandNotFound,
-    sendResponse,
     sendClearCommand,
-    sendHistoryCommand, changeDirectory, sendLSCommand, sendCDCommand
+    sendHistoryCommand,
+    sendLSCommand,
+    sendCDCommand,
+    sendCatCommand,
+    sendDownloadCommand,
+    sendHelpCommand
 } from '../../actions'
-import {CD_HELP, HELP, LS, LS_HELP, HISTORY_HELP, CAT_HELP, CLEAR_HELP, CLEAR, HISTORY, CD} from "../../types/commands";
+import {
+    CD_HELP,
+    HELP,
+    LS,
+    LS_HELP,
+    HISTORY_HELP,
+    CAT_HELP,
+    CLEAR_HELP,
+    CLEAR,
+    HISTORY,
+    CD,
+    CAT, DOWNLOAD, DOWNLOAD_HELP
+} from "../../types/commands";
 
 const theme = createMuiTheme({
     overrides: {
@@ -54,7 +69,7 @@ const CommandLine = ({cmdProps}) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const [command,setCommand] = useState(cmdProps.cmd);
-    const [args,setArgs] = useState(cmdProps.args);
+    const args = cmdProps.args
     const directory = cmdProps.dir
     const status = !cmdProps.status;
     const handleKeyPress = e => {
@@ -69,7 +84,7 @@ const CommandLine = ({cmdProps}) => {
 
             switch(cmd) {
                 case HELP:
-                    dispatch(sendResponse([LS_HELP,CD_HELP,HISTORY_HELP,CAT_HELP,CLEAR_HELP],HELP))
+                    dispatch(sendHelpCommand([LS_HELP,CD_HELP,HISTORY_HELP,CAT_HELP,CLEAR_HELP,DOWNLOAD_HELP]))
                     break;
                 case LS:
                     dispatch(sendLSCommand())
@@ -82,6 +97,12 @@ const CommandLine = ({cmdProps}) => {
                     break;
                 case CD:
                     dispatch(sendCDCommand(arg))
+                    break;
+                case CAT:
+                    dispatch(sendCatCommand(arg))
+                    break;
+                case DOWNLOAD:
+                    dispatch(sendDownloadCommand(arg))
                     break;
                 case '':
                     dispatch(sendEmptyCommand())
@@ -110,6 +131,7 @@ const CommandLine = ({cmdProps}) => {
                     <TextField
                         fullWidth
                         id="cmd"
+                        spellCheck="false"
                         autoComplete='off'
                         value={status? `${command} ${args}` : command}
                         onChange={handleChange}

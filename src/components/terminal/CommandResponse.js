@@ -1,7 +1,7 @@
 import React from 'react';
 import {makeStyles, Box} from '@material-ui/core';
 import './TerminalShell.css'
-import {CD, HELP, HISTORY, LS} from "../../types/commands";
+import {CAT, CD, DOWNLOAD, HELP, HISTORY, LS} from "../../types/commands";
 
 const useStyles = makeStyles(() => ({
     prompt: {
@@ -16,57 +16,75 @@ const useStyles = makeStyles(() => ({
         color: 'white',
         marginRight: 10
     },
+    pdf: {
+        color: '#67e8b2',
+        marginRight: 10
+    },
     folder: {
         color: '#00A8E8',
+        marginRight: 10
+    },
+    photo:{
+        color: '#e8e060',
         marginRight: 10
     }
 }))
 
-const CommandResponse = ({responseProps}) => {
+const CommandResponse = ({responseProps,componentId}) => {
     const classes = useStyles();
 
     const command = responseProps? responseProps.cmd:'';
     const content = responseProps? responseProps.content:[];
-    const error = responseProps? responseProps.content:false;
-    const dir = responseProps? responseProps.dir:'';
+    const error = responseProps? responseProps.error:false;
+    const dirOrFile = responseProps? responseProps.dirOrFile:'';
     const Response = () => {
         switch(command) {
             case HELP: {
                 const help = [];
-                content.forEach( commandDescription => {
+                content.forEach( (commandDescription,i) => {
                     if(typeof commandDescription === 'string'){
-                        help.push(<li>{commandDescription}</li>)
+                        help.push(<li key={`${componentId}-${i}`}>{commandDescription}</li>)
                     }
                     if(typeof commandDescription === 'object'){
-                        help.push(<li>{commandDescription[0]}</li>)
-                        help.push(<ul>
-                           { [...commandDescription].splice(1).map(e =>
-                                <li>{e}</li>
+                        help.push(<li key={`${componentId}-${i}`}>{commandDescription[0]}</li>)
+                        help.push(<ul key={`${componentId}-${i}-ul`}>
+                           { [...commandDescription].splice(1).forEach((e,j) =>
+                                <li key={`${componentId}-${i}-${j}`}>{e}</li>
                             )}
                         </ul>)
                     }
                 })
                 return (
-                    <ul>
+                    <ul key={componentId}>
                         {help}
                     </ul>
                 )
             }
             case LS:{
                 const folderAndFiles = [];
-                content.map(item => {
+                content.forEach((item,i) => {
                     if(item.endsWith('.txt')){
                         folderAndFiles.push(
-                            <span className={classes.file}>{item}</span>
+                            <span key={`${componentId}-${i}`} className={classes.file}>{item}</span>
+                        )
+                    }
+                    else if(item.endsWith('.pdf')){
+                        folderAndFiles.push(
+                            <span key={`${componentId}-${i}`} className={classes.pdf}>{item}</span>
+                        )
+                    }
+                    else if(item.endsWith('.jpeg')){
+                        folderAndFiles.push(
+                            <span  key={`${componentId}-${i}`}className={classes.photo}>{item}</span>
                         )
                     }
                     else{
-                        folderAndFiles.push(<span className={classes.folder}>{item}</span>);
+                        folderAndFiles.push(<span  key={`${componentId}-${i}`} className={classes.folder}>{item}</span>);
                     }
 
                 })
                 return (
-                    <p>{folderAndFiles}</p>
+                    <p key={componentId}>{folderAndFiles}</p>
                 )
             }
 
@@ -74,29 +92,53 @@ const CommandResponse = ({responseProps}) => {
                 const history = []
 
                 for(let i=0; i<content.length; i++){
-                    history.push(<span>{i+1} {content[i]} <br /></span>)
+                    history.push(<span  key={`${componentId}-${i}`}>{i+1} {content[i]} <br /></span>)
                 }
                 return (
-                    <span>
+                    <p key={componentId}>
                         {history}
-                    </span>
+                    </p>
                 )
             }
             case CD:
                 if(error){
                     return (
-                     <p>{command}: {dir}: {content}</p>
+                     <p key={componentId}>{command}: {dirOrFile}: {content}</p>
                     )
                 }
                 return (
-                    <div></div>
+                    <div key={componentId}></div>
+                )
+            case DOWNLOAD:
+                if(error){
+                    return (
+                        <p key={componentId}>{command}: {dirOrFile}: {content}</p>
+                    )
+                }
+                return (
+                    <div key={componentId}></div>
+                )
+            case CAT:
+                if(error){
+                    return (
+                        <p key={componentId}>{command}: {dirOrFile}: {content}</p>
+                    )
+                }
+                const links = [];
+
+                content.forEach((link,i) =>{
+                    links.push(<span key={`${componentId}-${i}`}>{link} <br /> </span>)
+                })
+
+                return (
+                    <p key={componentId}>{links}</p>
                 )
             case '':
                 return (
-                    <div></div>
+                    <div key={componentId}></div>
                 )
             default:
-                return <p>{command}: {content}</p>
+                return <p key={componentId}>{command}: {content}</p>
         }
     }
 

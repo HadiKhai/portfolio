@@ -16,7 +16,7 @@ const Terminal = () => {
     const dispatch = useDispatch();
 
     useEffect( ()=> {
-        dispatch(fetchDirectoryContent())},[]
+        dispatch(fetchDirectoryContent())}
     )
 
 

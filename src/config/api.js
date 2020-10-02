@@ -9,4 +9,11 @@ const httpClient = axios.create({
 
 });
 
-export default httpClient;
+
+const getBlob = axios.create({
+    baseURL,
+    responseType: "blob",
+    method: 'GET',
+
+});
+export {httpClient,getBlob};

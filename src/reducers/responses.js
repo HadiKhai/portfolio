@@ -3,8 +3,7 @@ import {
     COMMAND_FAILED,
     COMMAND_NOT_FOUND,
     COMMAND_EMPTY,
-    CLEAR_CMD,
-    DIRECTORY_NOT_FOUND
+    DIRECTORY_NOT_FOUND, FILE_NOT_FOUND
 } from '../types/action'
 
 export default  (state = [], action) => {
@@ -51,7 +50,19 @@ export default  (state = [], action) => {
                 {
                     cmd: action.payload.cmd,
                     content: action.payload.content,
-                    dir: action.payload.dir,
+                    dirOrFile: action.payload.dirOrFile,
+                    error:action.payload.error
+                }
+            ]
+        case FILE_NOT_FOUND:
+            return [
+                ...state,
+                {
+                    cmd: action.payload.cmd,
+                    content: action.payload.content,
+                    dirOrFile: action.payload.dirOrFile,
+                    error:action.payload.error
+
                 }
             ]
         default:

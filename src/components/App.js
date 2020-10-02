@@ -1,5 +1,4 @@
 import React from 'react';
-import {useDispatch} from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Terminal from "./terminal/Terminal";
 import Box from "@material-ui/core/Container";

@@ -48,16 +48,17 @@ const TerminalShell = () => {
     const currentDirectory = useSelector(state => state.directory.currentDirectory);
     const CMD = () => {
         const rows = [];
-        for(let i=0; i < commands.length; i++){
-            if(commands[i].show) {
+        commands.forEach((command,i)=>{
+            if(command.show) {
                 rows.push(
-                    <div>
-                        <CommandLine cmdProps={commands[i]} key={`Line-${i}`}/>
-                        <CommandResponse responseProps={responses[i]} key={`Response-${i}`}/>
+                    <div key={`LineAndResponse-${i}`}>
+                        <CommandLine cmdProps={command} key={`Line-${i}`}/>
+                        <CommandResponse responseProps={responses[i]} key={`Response-${i}`} componentId={`Response-${i}`}/>
                     </div>
                 )
             }
         }
+        )
         return (<div>
             {rows}
         </div>)
@@ -73,7 +74,7 @@ const TerminalShell = () => {
         }
 
         return (
-            <CommandLine cmdProps={conditions}/>
+            <CommandLine cmdProps={conditions} key={`LineInput`}/>
         )
     }
 
