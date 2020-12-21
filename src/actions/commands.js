@@ -137,7 +137,6 @@ const sendDownloadCommand = (file) => (dispatch,getState) => {
                     content: res.data,
                     error: false
                 }
-
             })
         })
 

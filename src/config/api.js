@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const LOCAL_API_HOST = 'http://localhost:3000';
+const LOCAL_API_HOST = '';
 const baseURL = LOCAL_API_HOST;
 
 const httpClient = axios.create({

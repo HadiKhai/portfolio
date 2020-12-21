@@ -21,6 +21,8 @@ const useStyles = makeStyles((theme) => ({
 
     },
     welcome: {
+        textAlign: 'center',
+
         padding: '0',
     },
     shell: {
@@ -32,12 +34,16 @@ const useStyles = makeStyles((theme) => ({
     variable: {
         marginRight: 10
     },
-    cmd: {
+    help: {
         color: "white"
 
     },
     line: {
         width: '100%',
+    },
+    personal:{
+        color: '#00A8E8',
+
     }
 }))
 
@@ -49,15 +55,15 @@ const TerminalShell = () => {
     const CMD = () => {
         const rows = [];
         commands.forEach((command,i)=>{
-            if(command.show) {
-                rows.push(
-                    <div key={`LineAndResponse-${i}`}>
-                        <CommandLine cmdProps={command} key={`Line-${i}`}/>
-                        <CommandResponse responseProps={responses[i]} key={`Response-${i}`} componentId={`Response-${i}`}/>
-                    </div>
-                )
+                if(command.show) {
+                    rows.push(
+                        <div key={`LineAndResponse-${i}`}>
+                            <CommandLine cmdProps={command} key={`Line-${i}`}/>
+                            <CommandResponse responseProps={responses[i]} key={`Response-${i}`} componentId={`Response-${i}`}/>
+                        </div>
+                    )
+                }
             }
-        }
         )
         return (<div>
             {rows}
@@ -82,7 +88,10 @@ const TerminalShell = () => {
         <Box display="flex" align="center" flexdirection="column" className={classes.main}>
             <Box>
                 <p className={classes.welcome}>
-                    Hello World! Welcome to HadiKhai's CLI! To get started type 'help'
+                    <span>Hello World! Welcome to HadiKhai's CLI! To get started type '<span className={classes.help}>help</span>'<br /></span>
+                    <span>Be careful, commands are case-sensitive!</span>
+                    <span>Inside the <span className={classes.personal}>personal</span> folder you can find my CV and some other files. Enjoy!</span>
+
                 </p>
             </Box>
             <Box className={classes.shell}>

@@ -45,10 +45,11 @@ const CommandResponse = ({responseProps,componentId}) => {
                     if(typeof commandDescription === 'string'){
                         help.push(<li key={`${componentId}-${i}`}>{commandDescription}</li>)
                     }
+                    console.log(commandDescription)
                     if(typeof commandDescription === 'object'){
                         help.push(<li key={`${componentId}-${i}`}>{commandDescription[0]}</li>)
                         help.push(<ul key={`${componentId}-${i}-ul`}>
-                           { [...commandDescription].splice(1).forEach((e,j) =>
+                           { [...commandDescription].splice(1).map((e,j) =>
                                 <li key={`${componentId}-${i}-${j}`}>{e}</li>
                             )}
                         </ul>)

@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme) => ({
     main: {
         color: 'white',
         height: '100%',
-        width: '100%',
+        width: '100%',  
     },
 }))
 const Footer = () => {
